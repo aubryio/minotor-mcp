@@ -225,11 +225,18 @@ test('CLI and actual MCP stdio share results', async (testContext) => {
   testContext.after(() => client.close());
   const instructions = client.getInstructions();
   assert.equal(typeof instructions, 'string');
-  assert.match(instructions, /summaries and focused queries/);
+  assert.match(
+    instructions,
+    /summaries and query_reachability for focused questions/,
+  );
   assert.match(instructions, /Previews are incomplete/);
   assert.match(
     instructions,
-    /local file path does not provide remote filesystem access/,
+    /Local file paths require access to the server’s filesystem/,
+  );
+  assert.match(
+    instructions,
+    /do not provide remote access or cloud file transfer/,
   );
   const tools = (await client.listTools()).tools;
   assert.equal(tools.length, 5);
